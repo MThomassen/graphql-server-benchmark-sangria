@@ -1,0 +1,60 @@
+@startuml
+
+hide circle
+hide empty members
+
+title GraphQL Server Model
+
+package "GraphQL Schema" <<Rectangle>> {
+   entity Author {
+      * id
+      firstname
+      lastname
+   }
+
+   entity Post {
+      * id
+      title
+      content
+   }
+
+   entity Comment {
+      * id
+      content
+   }
+
+   Author ||--o{ Post
+   Author ||--o{ Comment
+   Post ||--o{ Comment
+}
+
+package "External HTTP Service" <<Cloud>> {
+   entity SvcAuthor {
+      * id
+      firstname
+      lastname
+   }
+}
+
+package "RDBMS" <<Database>> {
+   entity SqlPost {
+      * id
+      title
+      content
+      author_id
+   }
+
+   entity SqlComment {
+      * id
+      content
+      author_id
+   }
+
+   SqlPost ||--o{ SqlComment
+}
+
+Author .[#blue] SvcAuthor
+Post .[#blue] SqlPost
+Comment .[#blue] SqlComment
+
+@enduml
